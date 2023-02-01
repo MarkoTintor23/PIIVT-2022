@@ -8,6 +8,7 @@ import CategoryRouter from './components/category/CategoryRouter.router';
 import IApplicationResources from "./common/IApplicationResources.interface";
 import * as mysql2 from "mysql2/promise";
 import ApplicationRouters from "./routers";
+import CategoryService from "./components/category/CategoryService.service";
 
 async function main(){
     const config: IConfig = DevConfig;
@@ -17,8 +18,7 @@ async function main(){
     recursive: true,
 });
 
-    const applicationResources: IApplicationResources = {
-    databaseConnection: await mysql2.createConnection({
+    const db = await mysql2.createConnection({
         host: config.database.host,
         port: config.database.port,
         user: config.database.user,
@@ -27,7 +27,13 @@ async function main(){
         charset:config.database.charset,
         timezone: config.database.timezone,
         supportBigNumbers: config.database.supportBigNumbers,
-    }),
+    });
+
+    const applicationResources: IApplicationResources = {
+    databaseConnection: db,
+    services: {
+        category: new CategoryService(db),
+    }
 };
 
     const application: express.Application = express();

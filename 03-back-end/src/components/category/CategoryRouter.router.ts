@@ -7,8 +7,7 @@ import * as express from "express";
 class CategoryRouter implements IRouter{
     public setupRoutes(application: express.Application, resources: IApplicationResources){
 
-        const categoryService: CategoryService = new CategoryService(resources.databaseConnection);
-        const categoryController: CategoryController = new CategoryController(categoryService);
+        const categoryController: CategoryController = new CategoryController(resources.services);
         
         application.get("/api/category",     categoryController.getAll.bind(categoryController));
         application.get("/api/category/:id", categoryController.getById.bind(categoryController));
