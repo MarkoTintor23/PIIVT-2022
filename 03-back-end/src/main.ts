@@ -9,6 +9,7 @@ import IApplicationResources from "./common/IApplicationResources.interface";
 import * as mysql2 from "mysql2/promise";
 import ApplicationRouters from "./routers";
 import CategoryService from "./components/category/CategoryService.service";
+import AdministratorService from "./components/administrator/AdministratorService.service";
 
 async function main(){
     const config: IConfig = DevConfig;
@@ -33,6 +34,7 @@ async function main(){
     databaseConnection: db,
     services: {
         category: new CategoryService(db),
+        administrator: new AdministratorService(db),
     }
 };
 

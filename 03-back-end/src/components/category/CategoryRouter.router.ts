@@ -1,13 +1,12 @@
 import IApplicationResources from "../../common/IApplicationResources.interface";
 import IRouter from "../../common/IRouter.interface";
 import CategoryController from "./CategoryController.controller";
-import CategoryService from "./CategoryService.service";
 import * as express from "express";
 
 class CategoryRouter implements IRouter{
     public setupRoutes(application: express.Application, resources: IApplicationResources){
 
-        const categoryController: CategoryController = new CategoryController(resources.services);
+        const categoryController: CategoryController = new CategoryController (resources.services);
         
         application.get("/api/category",     categoryController.getAll.bind(categoryController));
         application.get("/api/category/:id", categoryController.getById.bind(categoryController));

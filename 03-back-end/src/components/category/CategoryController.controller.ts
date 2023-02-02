@@ -6,6 +6,7 @@ import IEditCategory, { EditCategoryValidator, IEditCategoryDto } from "./dto/IE
 import BaseController from "../../common/BaseController";
 class CategoryController extends BaseController {
 
+
     async getAll(req: Request, res: Response){
         this.services.category.getAll(DefaultCategoryAdapterOptions)
         .then(result =>{

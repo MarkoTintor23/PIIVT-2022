@@ -1,4 +1,6 @@
 import IConfig from "./common/IConfig.interface";
+import CategoryRouter from './components/category/CategoryRouter.router';
+import AdministratorRouter from './components/administrator/AdministratorRouter.router';
 const DevConfig: IConfig = {
 server: {
     port: 10000,
@@ -26,7 +28,12 @@ database: {
     charset:"utf8",
     timezone: "+01:00",
     supportBigNumbers: true,
-}
+},
+
+routers: [
+    new CategoryRouter(),
+    new AdministratorRouter(),
+]
 };
 
 export {DevConfig};
