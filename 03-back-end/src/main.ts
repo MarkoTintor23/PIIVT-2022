@@ -10,6 +10,7 @@ import * as mysql2 from "mysql2/promise";
 import ApplicationRouters from "./routers";
 import CategoryService from "./components/category/CategoryService.service";
 import AdministratorService from "./components/administrator/AdministratorService.service";
+import { config } from "process";
 
 async function main(){
     const config: IConfig = DevConfig;
@@ -32,11 +33,12 @@ async function main(){
 
     const applicationResources: IApplicationResources = {
     databaseConnection: db,
-    services: {
-        category: new CategoryService(db),
-        administrator: new AdministratorService(db),
-    }
 };
+    applicationResources.services = {
+            category: new CategoryService(applicationResources),
+            administrator: new AdministratorService(applicationResources),
+        }
+    }
 
     const application: express.Application = express();
 
@@ -56,7 +58,7 @@ async function main(){
 }));
 
     for(const router of ApplicationRouters ){
-        router.setupRoutes(application, applicationResources);
+        router.setupRoutes(application, ApplicationRouters);
 
     }
 

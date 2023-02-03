@@ -2,21 +2,37 @@ import * as mysql2 from "mysql2/promise";
 import IModel from "./IModel.interface";
 import IAdapterOptions from './IAdapterOptions.interface';
 import IServiceData from "./IServiceData.interface";
+import IApplicationResources, { IServices } from "./IApplicationResources.interface";
 
 export default abstract class BaseService<ReturnModel extends IModel, AdapterOptions extends IAdapterOptions> {
     private database: mysql2.Connection;
+    private serviceInstances: IServices;
 
-    constructor (databaseConnection: mysql2.Connection) {
-        this.database = databaseConnection;
+    constructor (resources: IApplicationResources) {
+        this.database = resources.databaseConnection;
+        this.serviceInstances = resources.services;
     }
 
     protected get db(): mysql2.Connection {
         return this.database;
     }
 
+    protected get services(): IServices {
+        return this.serviceInstances;
+    }
+
 
     abstract tableName():string;
     abstract adaptToModel(data: any, options: AdapterOptions): Promise<ReturnModel>
+
+    protected async getAllByFieldNameAndValue(fieldName: string, value: any, options: AdapterOptions): Promise<ReturnModel[]> {
+        const tableName = this.tableName();
+
+        return new Promise<ReturnModel[]>
+
+            return resolve([]);
+                        }
+
 
      public getAll(options: AdapterOptions): Promise<ReturnModel[]>{
         const tableName = this.tableName();
