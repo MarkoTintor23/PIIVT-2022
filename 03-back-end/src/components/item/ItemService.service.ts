@@ -13,7 +13,7 @@ export default class ItemService extends BaseService<ItemModel, IItemAdapterOpti
     }
 
      adaptToModel(data: any, options: IItemAdapterOptions): Promise<ItemModel> {
-        return new Promise(async (resolve) => {
+        return new Promise (async (resolve) => {
             const item = new ItemModel();
 
             item.itemId      = +data?.item_id;
@@ -22,7 +22,7 @@ export default class ItemService extends BaseService<ItemModel, IItemAdapterOpti
             item.categoryId  = +data?.category_id;
             item.isActive    = +data?.is_active === 1;
 
-            }
+            
 
             if (options.loadSizes) {
                 item.sizes = await this.services.size.getAllByItemId(item.itemId, {});
