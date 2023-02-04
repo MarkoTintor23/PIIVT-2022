@@ -22,11 +22,12 @@ class CategoryService extends BaseService<CategoryModel, ICategoryAdapterOptions
 
     }
 
-     async adaptToModel(data: any): Promise<CategoryModel>{
+    async adaptToModel(data: any, options: ICategoryAdapterOptions = DefaultCategoryAdapterOptions): Promise<CategoryModel> {
         const category: CategoryModel = new CategoryModel();
 
         category.categoryId = +data?.category_id;
         category.name = data?.name;
+
         return category;
     }
 

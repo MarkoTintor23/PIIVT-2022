@@ -11,6 +11,9 @@ import ApplicationRouters from "./routers";
 import CategoryService from "./components/category/CategoryService.service";
 import AdministratorService from "./components/administrator/AdministratorService.service";
 import { config } from "process";
+import ManufacturerService from "./components/manufacturer/ManufacturerService.service";
+import SizeService from "./components/size/SizeService.service";
+import ItemService from "./components/item/ItemService.service";
 
 async function main(){
     const config: IConfig = DevConfig;
@@ -33,12 +36,21 @@ async function main(){
 
     const applicationResources: IApplicationResources = {
     databaseConnection: db,
-};
-    applicationResources.services = {
-            category: new CategoryService(applicationResources),
-            administrator: new AdministratorService(applicationResources),
-        }
+
+    services: {
+        category: null,
+        manufacturer: null,
+        administrator: null,
+        size:null,
+        item:null,
     }
+};
+    applicationResources.services.category = new CategoryService(applicationResources);
+    applicationResources.services.administrator = new AdministratorService(applicationResources);
+    applicationResources.services.manufacturer = new ManufacturerService(applicationResources);
+    applicationResources.services.size = new SizeService(applicationResources);
+    applicationResources.services.item = new ItemService(applicationResources);
+    
 
     const application: express.Application = express();
 
@@ -58,7 +70,7 @@ async function main(){
 }));
 
     for(const router of ApplicationRouters ){
-        router.setupRoutes(application, ApplicationRouters);
+        router.setupRoutes(application, applicationResources);
 
     }
 
@@ -68,11 +80,11 @@ async function main(){
 } );
 
     application.listen(config.server.port);
-}
+
 
 process.on('uncaughtException', error => {
     console.error('ERROR:',error);
 });
-
+}
 
 main();

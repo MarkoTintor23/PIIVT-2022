@@ -28,10 +28,30 @@ export default abstract class BaseService<ReturnModel extends IModel, AdapterOpt
     protected async getAllByFieldNameAndValue(fieldName: string, value: any, options: AdapterOptions): Promise<ReturnModel[]> {
         const tableName = this.tableName();
 
-        return new Promise<ReturnModel[]>
+        return new Promise<ReturnModel[]>(
+            (resolve, reject) => {
+                const sql: string = `SELECT * FROM \`${ tableName }\` WHERE \`${ fieldName }\` = ?;`;
 
-            return resolve([]);
+                this.db.execute(sql, [ value ])
+                    .then( async ( [ rows ] ) => {
+                        if (rows === undefined) {
+                            return resolve([]);
                         }
+
+                        const items: ReturnModel[] = [];
+
+                        for (const row of rows as mysql2.RowDataPacket[]) {
+                            items.push(await this.adaptToModel(row, options));
+                        }
+
+                        resolve(items);
+                    })
+                    .catch(error => {
+                        reject(error);
+                    });
+            }
+        );
+    }
 
 
      public getAll(options: AdapterOptions): Promise<ReturnModel[]>{
@@ -149,6 +169,33 @@ protected async baseAdd(data: IServiceData, options: AdapterOptions): Promise<Re
                 reject(error);
             });
         });
+    }
+
+
+    protected async getAllFromTableByFieldNameAndValue<OwnReturnType>(tableName: string, fieldName: string, value: any): Promise<OwnReturnType[]> {
+        return new Promise(
+            (resolve, reject) => {
+                const sql =  `SELECT * FROM \`${ tableName }\` WHERE \`${ fieldName }\` = ?;`;
+
+                this.db.execute(sql, [ value ])
+                .then( async ( [ rows ] ) => {
+                    if (rows === undefined) {
+                        return resolve([]);
+                    }
+
+                    const items: OwnReturnType[] = [];
+
+                    for (const row of rows as mysql2.RowDataPacket[]) {
+                        items.push(row as OwnReturnType);
+                    }
+
+                    resolve(items);
+                })
+                .catch(error => {
+                    reject(error);
+                });
+            }
+        );
     }
 
 }
