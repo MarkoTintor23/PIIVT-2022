@@ -1,12 +1,5 @@
 import IModel from "../../common/IModel.interface";
 import CategoryModel from "../category/CategoryModel.model";
-import SizeModel from "../size/SizeModel.model";
-
-export interface IItemSize {
-    size: SizeModel,
-    price: number;
-    kcal: number;
-}
 
 export default class ItemModel implements IModel {
     itemId: number;
@@ -16,5 +9,4 @@ export default class ItemModel implements IModel {
     isActive: boolean;
 
     category?: CategoryModel = null;
-    sizes?: IItemSize[] = [];
 }
