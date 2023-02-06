@@ -4,7 +4,6 @@ import ItemModel from "./ItemModel.model"
 
 export interface IItemAdapterOptions extends IAdapterOptions {
     loadCategory: false,
-    loadSizes: false,
 }
 
 export default class ItemService extends BaseService<ItemModel, IItemAdapterOptions> {
@@ -23,10 +22,6 @@ export default class ItemService extends BaseService<ItemModel, IItemAdapterOpti
             item.isActive    = +data?.is_active === 1;
 
             
-
-            if (options.loadSizes) {
-                item.sizes = await this.services.size.getAllByItemId(item.itemId, {});
-            }
 
             resolve(item);
         })

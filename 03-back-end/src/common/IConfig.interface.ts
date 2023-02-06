@@ -1,5 +1,20 @@
 import IRouter from "./IRouter.interface";
 
+
+
+export interface IResize {
+    prefix: string,
+    width: number,
+    height: number,
+    fit: "contain" | "cover",
+    defaultBackground: {
+        r: number,
+        g: number,
+        b: number,
+        alpha: number,
+    },
+}
+
 interface IConfig {
     server: {
         port: number;
@@ -30,6 +45,26 @@ interface IConfig {
     },
 
     routers: IRouter[];
+
+    fileUploads: {
+        maxFiles: number,
+        maxFileSize: number,
+        temporaryFileDirecotry: string,
+        destinationDirectoryRoot: string,
+        photos: {
+            allowedTypes: string[],
+            allowedExtensions: string[],
+            width: {
+                min: number,
+                max: number,
+            },
+            height: {
+                min: number,
+                max: number,
+            },
+            resize: IResize[],
+        },
+    },
 }
 
 export default IConfig;
