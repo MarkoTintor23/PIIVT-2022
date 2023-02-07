@@ -1,5 +1,8 @@
 import IModel from "../../common/IModel.interface";
 import CategoryModel from "../category/CategoryModel.model";
+import ManufacturerModel from "../manufacturer/ManufacturerModel.model";
+import PhotoModel from "../photo/PhotoModel.model";
+
 
 export default class ItemModel implements IModel {
     itemId: number;
@@ -9,4 +12,6 @@ export default class ItemModel implements IModel {
     isActive: boolean;
 
     category?: CategoryModel = null;
+    manufacturers?: ManufacturerModel[] = [];
+    photos?: PhotoModel[] = [];
 }

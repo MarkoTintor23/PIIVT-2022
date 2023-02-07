@@ -6,13 +6,9 @@ const ajv = new Ajv();
 export interface IAddItemDto {
     name: string;
     description: string;
-    ingredientIds: number[];
-    sizes: {
-        sizeId: number;
-        price: number;
-        kcal: number;
+    ManufacturerIds: number[];
     }[];
-}
+
 
 export default interface IAddItem extends IServiceData {
     name: string;
@@ -20,17 +16,9 @@ export default interface IAddItem extends IServiceData {
     category_id: number;
 }
 
-export interface IItemIngredient extends IServiceData {
+export interface IItemManufacturer extends IServiceData {
     item_id: number;
-    ingredient_id: number;
-}
-
-export interface IItemSize extends IServiceData {
-    item_id: number;
-    size_id: number;
-    price: number;
-    kcal: number;
-    is_active?: number;
+    manufacturer_id: number;
 }
 
 const AddItemValidator = ajv.compile({
@@ -46,7 +34,7 @@ const AddItemValidator = ajv.compile({
             minLength: 32,
             maxLength: 500,
         },
-        ingredientIds: {
+        ManufacturerIds: {
             type: "array",
             minItems: 0,
             uniqueItems: true,
@@ -54,43 +42,13 @@ const AddItemValidator = ajv.compile({
                 type: "integer",
             },
         },
-        sizes: {
-            type: "array",
-            minItems: 1,
-            uniqueItems: true,
-            items: {
-                type: "object",
-                properties: {
-                    sizeId: {
-                        type: "integer",
-                    },
-                    price: {
-                        type: "number",
-                        multipleOf: 0.01,
-                        minimum: 0.01,
-                    },
-                    kcal: {
-                        type: "number",
-                        multipleOf: 0.01,
-                        minimum: 0.01,
-                    }
-                },
-                required: [
-                    "sizeId",
-                    "price",
-                    "kcal",
-                ],
-                additionalProperties: false,
-            },
-        }
-    },
+
     required: [
         "name",
         "description",
-        "ingredientIds",
-        "sizes",
+        "manufacturerIds",
     ],
     additionalProperties: false,
-});
+}});
 
 export { AddItemValidator };
