@@ -98,20 +98,6 @@ export default class ItemController extends BaseController {
 
             return resultCategory;
         })
-        .then(resultCategory => {
-            const availableManufacturer: number[] = resultCategory.manufacturers?.map(manufacturer => manufacturer.manufacturerId);
-
-            for (let givenManufacturerId of data.ManufacturerIds) {
-                if (!availableManufacturer.includes(givenManufacturerId)) {
-                    throw {
-                        status: 404,
-                        message: `Manufacturer ${givenManufacturerId} not found in this category`,
-                    }
-                }
-            }
-
-            return this.services.sizes.getAll({});
-        })
         .then(() => {
             return this.services.item.startTransaction();
         })
@@ -439,10 +425,6 @@ export default class ItemController extends BaseController {
         .then(item => {
             const photo = item.photos?.find(photo => photo.photoId === photoId);
             if (!photo) throw { status: 404, message: "Photo not found in this item" };
-            return photo;
-        })
-        .then(async photo => {
-            await this.services.photo.deleteById(photo.photoId);
             return photo;
         })
         .then(photo => {

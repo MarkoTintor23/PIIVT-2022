@@ -14,4 +14,5 @@ export default class ItemModel implements IModel {
     category?: CategoryModel = null;
     manufacturers?: ManufacturerModel[] = [];
     photos?: PhotoModel[] = [];
+    filesToDelete: any;
 }

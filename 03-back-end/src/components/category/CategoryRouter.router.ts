@@ -1,6 +1,8 @@
 import IApplicationResources from "../../common/IApplicationResources.interface";
 import IRouter from "../../common/IRouter.interface";
+import AuthMiddleware from "../../middlewares/AuthMiddleware";
 import CategoryController from "./CategoryController.controller";
+import ItemController from "../item/ItemController.controller";
 import * as express from "express";
 
 class CategoryRouter implements IRouter{
@@ -8,10 +10,10 @@ class CategoryRouter implements IRouter{
 
         const categoryController: CategoryController = new CategoryController (resources.services);
         
-        application.get("/api/category",     categoryController.getAll.bind(categoryController));
-        application.get("/api/category/:id", categoryController.getById.bind(categoryController));
-        application.post("/api/category",    categoryController.add.bind(categoryController));
-        application.put("/api/category/:cid", categoryController.edit.bind(categoryController));
+        application.get("/api/category",                              AuthMiddleware.getVerifier("administrator", "user"), categoryController.getAll.bind(categoryController));
+        application.get("/api/category/:id",                          AuthMiddleware.getVerifier("administrator", "user"), categoryController.getById.bind(categoryController));
+        application.post("/api/category",                             AuthMiddleware.getVerifier("administrator"),         categoryController.add.bind(categoryController));
+        application.put("/api/category/:cid",                         AuthMiddleware.getVerifier("administrator"),         categoryController.edit.bind(categoryController));
 
     }
 }
