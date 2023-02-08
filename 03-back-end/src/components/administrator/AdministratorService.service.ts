@@ -17,7 +17,7 @@ export default class AdministratorService extends BaseService<AdministratorModel
         return "administrator";
     }
 
-     async adaptToModel(data: any, options: AdministratorAdapterOptions = DefaultAdministratorAdapterOptions): Promise<AdministratorModel> {
+    async adaptToModel(data: any, options: AdministratorAdapterOptions = DefaultAdministratorAdapterOptions): Promise<AdministratorModel> {
         const administrator = new AdministratorModel();
 
         administrator.administratorId = +data?.administrator_id;
@@ -43,4 +43,21 @@ export default class AdministratorService extends BaseService<AdministratorModel
         });
     }
 
+    public async getByUsername(username: string): Promise<AdministratorModel|null> {
+        return new Promise((resolve, reject) => {
+            this.getAllByFieldNameAndValue("username", username, {
+                removePassword: false,
+            })
+            .then(result => {
+                if (result.length === 0) {
+                    return resolve(null);
+                }
+
+                resolve(result[0]);
+            })
+            .catch(error => {
+                reject(error);
+            });
+        });
+    }
 }

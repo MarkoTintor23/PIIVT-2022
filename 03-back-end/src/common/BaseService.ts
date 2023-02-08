@@ -21,6 +21,18 @@ export default abstract class BaseService<ReturnModel extends IModel, AdapterOpt
         return this.serviceInstances;
     }
 
+    public startTransaction() {
+        return this.database.beginTransaction();
+    }
+
+    public commitChanges() {
+        return this.database.commit();
+    }
+
+    public rollbackChanges() {
+        return this.database.rollback();
+    }
+
 
     abstract tableName():string;
     abstract adaptToModel(data: any, options: AdapterOptions): Promise<ReturnModel>

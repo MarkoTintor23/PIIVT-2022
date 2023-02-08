@@ -7,12 +7,7 @@ export interface IEditItemDto {
     name: string;
     description: string;
     isActive: boolean;
-    ingredientIds: number[];
-    sizes: {
-        sizeId: number;
-        price: number;
-        kcal: number;
-    }[];
+    manufacturerIds: number[];
 }
 
 export default interface IEditItem extends IServiceData {
@@ -37,7 +32,7 @@ const EditItemValidator = ajv.compile({
         isActive: {
             type: "boolean",
         },
-        ingredientIds: {
+        manufacturerIds: {
             type: "array",
             minItems: 0,
             uniqueItems: true,
@@ -45,36 +40,7 @@ const EditItemValidator = ajv.compile({
                 type: "integer",
             },
         },
-        sizes: {
-            type: "array",
-            minItems: 1,
-            uniqueItems: true,
-            items: {
-                type: "object",
-                properties: {
-                    sizeId: {
-                        type: "integer",
-                    },
-                    price: {
-                        type: "number",
-                        multipleOf: 0.01,
-                        minimum: 0.01,
-                    },
-                    kcal: {
-                        type: "number",
-                        multipleOf: 0.01,
-                        minimum: 0.01,
-                    }
-                },
-                required: [
-                    "sizeId",
-                    "price",
-                    "kcal",
-                ],
-                additionalProperties: false,
-            },
-        }
-    },
+       
     required: [
         "name",
         "description",
@@ -83,6 +49,6 @@ const EditItemValidator = ajv.compile({
         "sizes",
     ],
     additionalProperties: false,
-});
+}});
 
 export { EditItemValidator };
