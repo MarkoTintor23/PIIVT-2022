@@ -32,8 +32,10 @@ Tehnička ograničenja
 ...
 
 ### Uloge korisnika
-
+Username: korisnik
+Password: Korisnik22
 **Administrator**
 
-...
+Username: administrator
+Password: Admin
 
